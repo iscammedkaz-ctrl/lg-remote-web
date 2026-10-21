@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#121316">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LG Remote">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+<title>LG Remote</title>
+</head>
+<body>
+<header>
+  <button id="btnSetup" class="icon" aria-label="Réglages">☰</button>
+  <div class="title"><span id="tvName">LG Remote</span><small id="status" class="st-off">Déconnecté</small></div>
+  <button id="btnPower" class="icon danger" aria-label="Éteindre">⏻</button>
+</header>
+
+<div id="banner" class="banner hidden"></div>
+
+<!-- Écran de configuration -->
+<section id="setup" class="card">
+  <h2>Connexion à la TV</h2>
+  <label>Adresse IP de la TV
+    <input id="ip" inputmode="decimal" placeholder="192.168.1.42" autocomplete="off">
+  </label>
+  <div class="row">
+    <label class="chk"><input type="checkbox" id="useWs"> ws://:3000 (non chiffré)</label>
+  </div>
+  <p id="wsHint" class="hint"></p>
+  <div class="row gap">
+    <button id="btnCert" class="tonal">1. Autoriser le certificat</button>
+    <button id="btnConnect" class="filled">2. Connecter</button>
+  </div>
+  <p class="hint">Étape 1 : un onglet s’ouvre sur <b>https://IP:3001</b>. Safari affiche « Cette connexion n’est pas privée » → <i>Afficher les détails</i> → <i>Visiter ce site web</i> → confirmer. Revenez ensuite ici et touchez « Connecter ». Acceptez la demande d’appairage sur la TV.</p>
+
+  <h3>Recherche sur le réseau</h3>
+  <label>Sous-réseaux (séparés par des virgules)
+    <input id="subnets" value="192.168.1, 192.168.0, 192.168.43, 172.20.10" autocomplete="off">
+  </label>
+  <button id="btnScan" class="tonal wide">Scanner</button>
+  <progress id="scanProg" class="hidden" value="0" max="1"></progress>
+  <ul id="scanList" class="list"></ul>
+
+  <h3>TV enregistrées</h3>
+  <ul id="savedList" class="list"></ul>
+
+  <h3>Wake-on-LAN</h3>
+  <p class="hint">Un navigateur ne peut pas envoyer de paquet UDP : l’allumage par Wake-on-LAN est impossible depuis une page web. Activez plutôt « Allumer via Wi-Fi / Mobile » (Quick Start+) sur la TV, puis utilisez l’app LG ThinQ ou la télécommande pour allumer.</p>
+</section>
+
+<!-- Télécommande -->
+<main id="remote" class="hidden">
+  <div class="apps" id="quickApps"></div>
+
+  <div class="rowbtns">
+    <button data-btn="BACK" class="pill">↩ Retour</button>
+    <button data-btn="HOME" class="pill">⌂ Accueil</button>
+    <button id="btnApps" class="pill">▦ Apps</button>
+  </div>
+
+  <div class="dpad">
+    <button data-btn="UP" class="d up" aria-label="Haut">▲</button>
+    <button data-btn="LEFT" class="d left" aria-label="Gauche">◀</button>
+    <button data-btn="ENTER" class="ok" aria-label="OK">OK</button>
+    <button data-btn="RIGHT" class="d right" aria-label="Droite">▶</button>
+    <button data-btn="DOWN" class="d down" aria-label="Bas">▼</button>
+  </div>
+
+  <div class="vol">
+    <button id="volDown" class="round" aria-label="Volume moins">−</button>
+    <button id="mute" class="round" aria-label="Muet">🔇</button>
+    <button id="volUp" class="round" aria-label="Volume plus">+</button>
+  </div>
+  <div class="rowbtns">
+    <button data-btn="EXIT" class="pill">✕ Quitter</button>
+    <button data-btn="MENU" class="pill">⚙ Menu</button>
+    <button data-btn="INFO" class="pill">ⓘ Info</button>
+  </div>
+</main>
+
+<dialog id="appsDlg">
+  <div class="dlghead"><h2>Applications</h2><button class="icon" id="closeApps">✕</button></div>
+  <ul id="appList" class="list apps-list"></ul>
+</dialog>
+
+<script src="pairing.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
